@@ -1,0 +1,15 @@
+import express from 'express';
+import { CouchClient } from '../../../packages/couchdb/src/client.js';
+import { MemoryLedger } from '../../../packages/ledger/src/index.js';
+import { RoleSeparatedFabricLedger,type FabricGatewayConfig } from '../../../packages/ledger/src/fabric.js';
+import { ElectionService } from '../../election-service/src/service.js';
+import { runTecv } from '../../../packages/tecv/src/index.js';
+import { tallyVerified } from '../../tally-service/src/service.js';
+const electionId=process.env.ELECTION_ID??'ELECTION-2026-001',district=process.env.DISTRICT??'Jaffna';
+if(!process.env.BALLOT_KEY_HEX) throw new Error('BALLOT_KEY_HEX is required');
+const couch=new CouchClient(process.env.COUCHDB_URL??'http://127.0.0.1:5984',process.env.COUCHDB_ADMIN_USER??'tecv_admin',process.env.COUCHDB_ADMIN_PASSWORD??'tecv_research_only');
+const env=(name:string)=>{const v=process.env[name];if(!v)throw new Error(`${name} is required for Fabric adapter`);return v};const fabricCfg=(prefix:string,mspId:string):FabricGatewayConfig=>({peerEndpoint:env(`${prefix}_PEER_ENDPOINT`),peerHostAlias:env(`${prefix}_PEER_HOST_ALIAS`),tlsCertPath:env(`${prefix}_TLS_CERT_PATH`),identityCertPath:env(`${prefix}_IDENTITY_CERT_PATH`),privateKeyPath:env(`${prefix}_PRIVATE_KEY_PATH`),mspId,channelName:process.env.FABRIC_CHANNEL??'voting-channel',chaincodeName:process.env.FABRIC_CHAINCODE??'tecv'});const ledger=process.env.LEDGER_ADAPTER==='fabric'?await RoleSeparatedFabricLedger.connect(fabricCfg('FABRIC_VOTE','Org1MSP'),fabricCfg('FABRIC_RESULT','Org2MSP')):new MemoryLedger(electionId,district);const service=new ElectionService(couch,ledger,Buffer.from(process.env.BALLOT_KEY_HEX,'hex'),electionId,district);const app=express();app.use(express.json());app.use(express.static('apps/web'));let latestAudit:any=null;
+app.post('/votes',async(req,res)=>{try{res.status(201).json(await service.castVote(req.body.voterId,req.body.candidate))}catch(e){res.status(409).json({error:(e as Error).message})}});
+app.post('/audits',async(_req,res)=>{try{latestAudit=await runTecv(couch.votes(),ledger,electionId,district);res.json(latestAudit)}catch(e){res.status(503).json({error:(e as Error).message})}});
+app.post('/tallies',async(_req,res)=>{try{res.json(await tallyVerified(latestAudit,couch,Buffer.from(process.env.BALLOT_KEY_HEX!,'hex'),ledger))}catch(e){res.status(409).json({error:(e as Error).message})}});
+app.get('/health',(_req,res)=>res.json({status:'ok',ledgerAdapter:process.env.LEDGER_ADAPTER??'memory',warning:process.env.LEDGER_ADAPTER==='fabric'?undefined:'Memory adapter is component-test mode, not Hyperledger Fabric'}));app.listen(Number(process.env.PORT??3000),()=>console.log(JSON.stringify({event:'server_started',port:Number(process.env.PORT??3000)})));

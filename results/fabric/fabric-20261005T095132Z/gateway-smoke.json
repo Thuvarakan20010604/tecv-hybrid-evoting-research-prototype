@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "adapter": "Fabric Gateway API",
+  "proof": {
+    "voteDocId": "fabric-doc-001",
+    "voteDocRev": "1-abc",
+    "voteHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "district": "Jaffna",
+    "electionId": "ELECTION-2026-001",
+    "timestamp": "2026-10-05T09:49:00.000Z",
+    "transactionId": "b78d55dc582957f1810d7ab3f13ed018c5d6d78829280f7d945ead237bd5fb63",
+    "submitterId": "x509::/C=US/ST=California/L=San Francisco/OU=admin/CN=Admin@org1.example.com::/C=US/ST=California/L=San Francisco/O=org1.example.com/CN=ca.org1.example.com"
+  }
+}

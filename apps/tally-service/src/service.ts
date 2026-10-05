@@ -1,0 +1,7 @@
+import { randomUUID } from 'node:crypto';
+import { decryptBallot, resultHash } from '../../../packages/crypto/src/index.js';
+import type { CouchClient } from '../../../packages/couchdb/src/client.js';
+import type { Ledger } from '../../../packages/ledger/src/index.js';
+import { CANDIDATES, type AuditResult, type ResultProof } from '../../../packages/shared/src/types.js';
+export async function tallyVerified(audit:AuditResult|null,couch:CouchClient,key:Buffer,ledger:Ledger){if(!audit?.auditResultHash)throw new Error('ERR_VALID_AUDIT_REQUIRED');const totals:Record<string,number>=Object.fromEntries(CANDIDATES.map(c=>[c,0]));const failures:Array<{voteDocId:string;error:string}>=[];for(const id of audit.validVoteDocIds){const d=await couch.votes().get(id);if(!d){failures.push({voteDocId:id,error:'MISSING_AFTER_AUDIT'});continue}try{const c=decryptBallot(d.encryptedBallot,key);if(!(c in totals))throw new Error('ERR_UNKNOWN_CANDIDATE');totals[c]=(totals[c]??0)+1}catch(e){failures.push({voteDocId:id,error:(e as Error).message})}}
+ const summary={electionId:audit.electionId,district:audit.district,candidateTotals:totals,validVoteCount:Object.values(totals).reduce((a,b)=>a+b,0),invalidVoteCount:audit.invalidVotes+failures.length,auditResultHash:audit.auditResultHash};const proof:ResultProof={resultId:randomUUID(),...summary,resultHash:resultHash(summary),timestamp:new Date().toISOString()};const committed=await ledger.submitResultProof(proof,'result-submitter');return{summary,failures,resultProof:committed}}

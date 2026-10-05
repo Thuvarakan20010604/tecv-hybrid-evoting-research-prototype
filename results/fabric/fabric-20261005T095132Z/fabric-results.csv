@@ -1,0 +1,7 @@
+scenario,active_orderers,attempts,committed,failed,duration_ms,outcome
+normal_4_orderers,4,1,1,0,238,PASS
+duplicate_proof_rejection,4,1,0,1,182,EXPECTED_REJECTION_OR_FAILURE
+unauthorized_vote_rejection,4,1,0,1,184,EXPECTED_REJECTION_OR_FAILURE
+result_proof,4,1,1,0,257,PASS
+one_orderer_unavailable,3,1,1,0,265,PASS
+beyond_threshold,1,1,0,1,10252,LIVENESS_LOSS_OBSERVED

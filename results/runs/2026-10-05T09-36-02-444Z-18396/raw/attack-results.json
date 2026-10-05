@@ -1,0 +1,361 @@
+[
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 0 Normal Vote Flow",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": {
+      "audit": {
+        "auditRunId": "dd56c445-af08-4157-be84-3011191d8a5d",
+        "startedAt": "2026-10-05T09:36:03.028Z",
+        "completedAt": "2026-10-05T09:36:03.044Z",
+        "electionId": "ELECTION-2026-001",
+        "district": "Jaffna",
+        "totalLedgerProofs": 5,
+        "totalDatabaseVotes": 5,
+        "validVoteDocIds": [
+          "0afc4e52-99fa-4900-bf80-53d74ea06fa1",
+          "12017f6f-6898-4d73-b002-0ec992d44777",
+          "aee69c91-68d9-4eab-866a-397e1b2d94f7",
+          "c2afb0f9-d0ec-45b4-99f6-3e0040b7a8de",
+          "cdcdbe3f-fb00-4115-989f-bd2fca681b64"
+        ],
+        "anomalies": [],
+        "validVotes": 5,
+        "invalidVotes": 0,
+        "missingVotes": 0,
+        "revisionMismatches": 0,
+        "hashMismatches": 0,
+        "unprovenDatabaseRecords": 0,
+        "auditResultHash": "4df8dda45d551d3ae2cb2e428a91a36cf3fb8c35a48518d828937a0356a6ca13"
+      },
+      "groundTruth": {
+        "Candidate A": 2,
+        "Candidate B": 1,
+        "Candidate C": 1,
+        "Candidate D": 1
+      },
+      "actual": {
+        "Candidate A": 2,
+        "Candidate B": 1,
+        "Candidate C": 1,
+        "Candidate D": 1
+      },
+      "tallyMatches": true
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 1 Vote Document Modification",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": {
+      "voteDocId": "12017f6f-6898-4d73-b002-0ec992d44777",
+      "classification": "REVISION_MISMATCH",
+      "expectedRev": "1-84c99d6eaa54f064769857f6f5d42e7f",
+      "actualRev": "2-aa875c6af2bd89c933e3b224f9c7aac2",
+      "expectedHash": "872e0d0bb3a974d506b99f7e471ed0b6e10b6feaaeed9d0290fa4b6259c06d3f",
+      "actualHash": "872e0d0bb3a974d506b99f7e471ed0b6e10b6feaaeed9d0290fa4b6259c06d3f"
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 2 Hash Mismatch",
+    "status": "PASS",
+    "level": "COMPONENT_LEVEL",
+    "observed": {
+      "auditRunId": "d9c3c387-5cbb-43b3-a53a-90aaadd9c4aa",
+      "startedAt": "2026-10-05T09:36:03.088Z",
+      "completedAt": "2026-10-05T09:36:03.088Z",
+      "electionId": "ELECTION-2026-001",
+      "district": "Jaffna",
+      "totalLedgerProofs": 1,
+      "totalDatabaseVotes": 1,
+      "validVoteDocIds": [],
+      "anomalies": [
+        {
+          "voteDocId": "cdcdbe3f-fb00-4115-989f-bd2fca681b64",
+          "classification": "HASH_MISMATCH",
+          "expectedRev": "1-e7a14bb2fa2a88896a60c28ec4c5fa88",
+          "actualRev": "1-e7a14bb2fa2a88896a60c28ec4c5fa88",
+          "expectedHash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "actualHash": "1ba58832f6508638ba429d4dd1f4e15498fbb1c54d0d48536c5b43e911c39792"
+        }
+      ],
+      "validVotes": 0,
+      "invalidVotes": 1,
+      "missingVotes": 0,
+      "revisionMismatches": 0,
+      "hashMismatches": 1,
+      "unprovenDatabaseRecords": 0,
+      "auditResultHash": "db7c3bfb5abed7f6126a1c2583debbce60f48f4073030c078b6517ae416a1223"
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 3 Vote Deletion",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": {
+      "auditRunId": "a51f560a-736a-4c03-bc2f-d8ea1d73ec6e",
+      "startedAt": "2026-10-05T09:36:03.106Z",
+      "completedAt": "2026-10-05T09:36:03.125Z",
+      "electionId": "ELECTION-2026-001",
+      "district": "Jaffna",
+      "totalLedgerProofs": 5,
+      "totalDatabaseVotes": 5,
+      "validVoteDocIds": [
+        "aee69c91-68d9-4eab-866a-397e1b2d94f7",
+        "c2afb0f9-d0ec-45b4-99f6-3e0040b7a8de",
+        "cdcdbe3f-fb00-4115-989f-bd2fca681b64"
+      ],
+      "anomalies": [
+        {
+          "voteDocId": "0afc4e52-99fa-4900-bf80-53d74ea06fa1",
+          "classification": "MISSING_VOTE"
+        },
+        {
+          "voteDocId": "12017f6f-6898-4d73-b002-0ec992d44777",
+          "classification": "REVISION_MISMATCH",
+          "expectedRev": "1-84c99d6eaa54f064769857f6f5d42e7f",
+          "actualRev": "2-aa875c6af2bd89c933e3b224f9c7aac2",
+          "expectedHash": "872e0d0bb3a974d506b99f7e471ed0b6e10b6feaaeed9d0290fa4b6259c06d3f",
+          "actualHash": "872e0d0bb3a974d506b99f7e471ed0b6e10b6feaaeed9d0290fa4b6259c06d3f"
+        },
+        {
+          "voteDocId": "fake-unproven",
+          "classification": "UNPROVEN_DB_RECORD",
+          "actualRev": "1-040edec88ff1ebe934fc878bd1e1f81b",
+          "actualHash": "3e0c9a676d1ac20f1541c866938a29c284929e74b887dda5c11f5380131f9c35"
+        }
+      ],
+      "validVotes": 3,
+      "invalidVotes": 3,
+      "missingVotes": 1,
+      "revisionMismatches": 1,
+      "hashMismatches": 0,
+      "unprovenDatabaseRecords": 1,
+      "auditResultHash": "c3b1337747633823da9631320e5c951d6df9a200189cca08d4c68d2fa643a0ea"
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 4 Fake Vote Insertion",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": {
+      "auditRunId": "a51f560a-736a-4c03-bc2f-d8ea1d73ec6e",
+      "startedAt": "2026-10-05T09:36:03.106Z",
+      "completedAt": "2026-10-05T09:36:03.125Z",
+      "electionId": "ELECTION-2026-001",
+      "district": "Jaffna",
+      "totalLedgerProofs": 5,
+      "totalDatabaseVotes": 5,
+      "validVoteDocIds": [
+        "aee69c91-68d9-4eab-866a-397e1b2d94f7",
+        "c2afb0f9-d0ec-45b4-99f6-3e0040b7a8de",
+        "cdcdbe3f-fb00-4115-989f-bd2fca681b64"
+      ],
+      "anomalies": [
+        {
+          "voteDocId": "0afc4e52-99fa-4900-bf80-53d74ea06fa1",
+          "classification": "MISSING_VOTE"
+        },
+        {
+          "voteDocId": "12017f6f-6898-4d73-b002-0ec992d44777",
+          "classification": "REVISION_MISMATCH",
+          "expectedRev": "1-84c99d6eaa54f064769857f6f5d42e7f",
+          "actualRev": "2-aa875c6af2bd89c933e3b224f9c7aac2",
+          "expectedHash": "872e0d0bb3a974d506b99f7e471ed0b6e10b6feaaeed9d0290fa4b6259c06d3f",
+          "actualHash": "872e0d0bb3a974d506b99f7e471ed0b6e10b6feaaeed9d0290fa4b6259c06d3f"
+        },
+        {
+          "voteDocId": "fake-unproven",
+          "classification": "UNPROVEN_DB_RECORD",
+          "actualRev": "1-040edec88ff1ebe934fc878bd1e1f81b",
+          "actualHash": "3e0c9a676d1ac20f1541c866938a29c284929e74b887dda5c11f5380131f9c35"
+        }
+      ],
+      "validVotes": 3,
+      "invalidVotes": 3,
+      "missingVotes": 1,
+      "revisionMismatches": 1,
+      "hashMismatches": 0,
+      "unprovenDatabaseRecords": 1,
+      "auditResultHash": "c3b1337747633823da9631320e5c951d6df9a200189cca08d4c68d2fa643a0ea"
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 5 Sequential Double Vote",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "ERR_ALREADY_VOTED"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 5 Concurrent Double Vote",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": [
+      "ACCEPTED",
+      "ERR_CONCURRENT_VOTE_CONFLICT"
+    ]
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 6 Duplicate Proof",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "ERR_DUPLICATE_PROOF"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 7 Unauthorized Proof",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "ERR_UNAUTHORIZED"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 8 Unauthorized Result Proof",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "ERR_UNAUTHORIZED"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 9 Unverified Counting",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "ERR_VALID_AUDIT_REQUIRED"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 10 One BFT Orderer Unavailable",
+    "status": "NOT EXECUTED",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "Fabric BFT network not active"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 11 Beyond BFT Threshold",
+    "status": "NOT EXECUTED",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "Fabric BFT network not active"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 12 CouchDB Unavailable",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "fetch failed"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 13 Fabric Temporarily Unavailable",
+    "status": "NOT EXECUTED",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": "Fabric adapter not active"
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 14 Wrong Decryption Key",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": {
+      "decryptionFailures": 5
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 15 Pre-Encryption Voter Intent Mutation",
+    "status": "LIMITATION CONFIRMED",
+    "level": "OUTSIDE_TECV_SECURITY_SCOPE",
+    "observed": {
+      "intended": "Candidate A",
+      "encrypted": "Candidate B",
+      "tecv": "VALID"
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 16 Metadata Modification",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": {
+      "auditRunId": "a51f560a-736a-4c03-bc2f-d8ea1d73ec6e",
+      "startedAt": "2026-10-05T09:36:03.106Z",
+      "completedAt": "2026-10-05T09:36:03.125Z",
+      "electionId": "ELECTION-2026-001",
+      "district": "Jaffna",
+      "totalLedgerProofs": 5,
+      "totalDatabaseVotes": 5,
+      "validVoteDocIds": [
+        "aee69c91-68d9-4eab-866a-397e1b2d94f7",
+        "c2afb0f9-d0ec-45b4-99f6-3e0040b7a8de",
+        "cdcdbe3f-fb00-4115-989f-bd2fca681b64"
+      ],
+      "anomalies": [
+        {
+          "voteDocId": "0afc4e52-99fa-4900-bf80-53d74ea06fa1",
+          "classification": "MISSING_VOTE"
+        },
+        {
+          "voteDocId": "12017f6f-6898-4d73-b002-0ec992d44777",
+          "classification": "REVISION_MISMATCH",
+          "expectedRev": "1-84c99d6eaa54f064769857f6f5d42e7f",
+          "actualRev": "2-aa875c6af2bd89c933e3b224f9c7aac2",
+          "expectedHash": "872e0d0bb3a974d506b99f7e471ed0b6e10b6feaaeed9d0290fa4b6259c06d3f",
+          "actualHash": "872e0d0bb3a974d506b99f7e471ed0b6e10b6feaaeed9d0290fa4b6259c06d3f"
+        },
+        {
+          "voteDocId": "fake-unproven",
+          "classification": "UNPROVEN_DB_RECORD",
+          "actualRev": "1-040edec88ff1ebe934fc878bd1e1f81b",
+          "actualHash": "3e0c9a676d1ac20f1541c866938a29c284929e74b887dda5c11f5380131f9c35"
+        }
+      ],
+      "validVotes": 3,
+      "invalidVotes": 3,
+      "missingVotes": 1,
+      "revisionMismatches": 1,
+      "hashMismatches": 0,
+      "unprovenDatabaseRecords": 1,
+      "auditResultHash": "c3b1337747633823da9631320e5c951d6df9a200189cca08d4c68d2fa643a0ea"
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 17 Observer Determinism",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": {
+      "auditHashA": "d5056de9925a7a951fdbdc8620c29977c60805d4eb868b0f6aa587352f4296ae",
+      "auditHashB": "d5056de9925a7a951fdbdc8620c29977c60805d4eb868b0f6aa587352f4296ae"
+    }
+  },
+  {
+    "runId": "2026-10-05T09-36-02-444Z-18396",
+    "scenario": "TEST 18 Result Proof Verification",
+    "status": "PASS",
+    "level": "COMPONENT_INTEGRATION",
+    "observed": {
+      "resultId": "f4c3d5d3-1560-496a-8190-e6e8d4e138a2",
+      "electionId": "ELECTION-2026-001",
+      "district": "Jaffna",
+      "candidateTotals": {
+        "Candidate A": 2,
+        "Candidate B": 2,
+        "Candidate C": 0,
+        "Candidate D": 1
+      },
+      "validVoteCount": 5,
+      "invalidVoteCount": 3,
+      "auditResultHash": "d5056de9925a7a951fdbdc8620c29977c60805d4eb868b0f6aa587352f4296ae",
+      "resultHash": "df44ff86fa05c734aaf5706f657fe66eddc53cd73beb547fe1afffcb9ce551d8",
+      "timestamp": "2026-10-05T09:36:03.267Z",
+      "transactionId": "f49b1e3a-e28d-47be-abfb-87675cca4bcc"
+    }
+  }
+]

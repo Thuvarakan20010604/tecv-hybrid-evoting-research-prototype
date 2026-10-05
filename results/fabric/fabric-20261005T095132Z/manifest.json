@@ -1,0 +1,9 @@
+{
+  "runId": "fabric-20261005T095132Z",
+  "classification": "MEASURED local Docker crash/availability experiment",
+  "fabricVersion": "3.1.5",
+  "consensus": "BFT/SmartBFT",
+  "orderers": 4,
+  "peers": 2,
+  "warning": "Stopped orderers model crash/availability faults, not Byzantine-malicious behavior."
+}

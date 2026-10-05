@@ -1,0 +1,11 @@
+import { randomUUID } from 'node:crypto';
+import { canonicalize, sha256, voteHash } from '../../crypto/src/index.js';
+import type { Ledger } from '../../ledger/src/index.js';
+import type { AuditResult, TecvAnomaly, VoteDoc } from '../../shared/src/types.js';
+export interface VoteReader { get(id:string):Promise<VoteDoc|null>; all():Promise<VoteDoc[]> }
+export async function runTecv(votes:VoteReader, ledger:Ledger, electionId:string, district:string):Promise<AuditResult>{
+ const startedAt=new Date().toISOString(); const proofs=await ledger.getVoteProofsByElection(electionId); const docs=(await votes.all()).filter(v=>v.electionId===electionId&&v.district===district).sort((a,b)=>a.voteDocId.localeCompare(b.voteDocId)); const proofIds=new Set(proofs.map(p=>p.voteDocId)); const anomalies:TecvAnomaly[]=[]; const valid:string[]=[];
+ for(const p of proofs){const d=await votes.get(p.voteDocId);if(!d){anomalies.push({voteDocId:p.voteDocId,classification:'MISSING_VOTE'});continue} const actualHash=voteHash(d.encryptedBallot);if(d._rev!==p.voteDocRev){anomalies.push({voteDocId:p.voteDocId,classification:'REVISION_MISMATCH',expectedRev:p.voteDocRev,actualRev:d._rev,expectedHash:p.voteHash,actualHash});continue}if(actualHash!==p.voteHash){anomalies.push({voteDocId:p.voteDocId,classification:'HASH_MISMATCH',expectedRev:p.voteDocRev,actualRev:d._rev,expectedHash:p.voteHash,actualHash});continue}valid.push(p.voteDocId)}
+ for(const d of docs)if(!proofIds.has(d.voteDocId))anomalies.push({voteDocId:d.voteDocId,classification:'UNPROVEN_DB_RECORD',actualRev:d._rev,actualHash:voteHash(d.encryptedBallot)});
+ anomalies.sort((a,b)=>a.voteDocId.localeCompare(b.voteDocId)||a.classification.localeCompare(b.classification)); valid.sort(); const count=(c:string)=>anomalies.filter(a=>a.classification===c).length; const stable={electionId,district,totalLedgerProofs:proofs.length,totalDatabaseVotes:docs.length,validVoteDocIds:valid,anomalies}; const result:AuditResult={auditRunId:randomUUID(),startedAt,completedAt:new Date().toISOString(),...stable,validVotes:valid.length,invalidVotes:anomalies.length,missingVotes:count('MISSING_VOTE'),revisionMismatches:count('REVISION_MISMATCH'),hashMismatches:count('HASH_MISMATCH'),unprovenDatabaseRecords:count('UNPROVEN_DB_RECORD'),auditResultHash:''}; result.auditResultHash=sha256(canonicalize(stable));return result;
+}

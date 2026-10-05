@@ -1,0 +1,14 @@
+import { Context,Contract,Info } from 'fabric-contract-api';import { Errors,type VoteProof } from './models';
+const PREFIX='VOTE_PROOF',ALLOWED_ELECTION='ELECTION-2026-001',ALLOWED_DISTRICT='Jaffna';
+@Info({title:'VoteProofContract',description:'Immutable revision-aware encrypted ballot proofs'})
+export class VoteProofContract extends Contract{
+ constructor(){super('VoteProofContract')}
+ private key(ctx:Context,id:string){return ctx.stub.createCompositeKey(PREFIX,[id])}
+ private authorize(ctx:Context){const attributed=ctx.clientIdentity.assertAttributeValue('role','vote-submitter');const msp=ctx.clientIdentity.getMSPID();if(!attributed&&msp!=='Org1MSP')throw new Error(Errors.UNAUTHORIZED)}
+ async SubmitVoteProof(ctx:Context,voteDocId:string,voteDocRev:string,voteHash:string,district:string,electionId:string,timestamp:string):Promise<VoteProof>{this.authorize(ctx);for(const [name,value] of Object.entries({voteDocId,voteDocRev,voteHash,district,electionId,timestamp}))if(!value?.trim())throw new Error(`${Errors.MISSING_FIELD}:${name}`);if(electionId!==ALLOWED_ELECTION)throw new Error(Errors.INVALID_ELECTION);if(district!==ALLOWED_DISTRICT)throw new Error(Errors.INVALID_DISTRICT);if(!/^[a-f0-9]{64}$/i.test(voteHash))throw new Error(`${Errors.INVALID_DATA}:voteHash`);const key=this.key(ctx,voteDocId);if((await ctx.stub.getState(key)).length)throw new Error(Errors.DUPLICATE_PROOF);const proof:VoteProof={voteDocId,voteDocRev,voteHash:voteHash.toLowerCase(),district,electionId,timestamp,transactionId:ctx.stub.getTxID(),submitterId:ctx.clientIdentity.getID()};await ctx.stub.putState(key,Buffer.from(JSON.stringify(proof)));ctx.stub.setEvent('VoteProofSubmitted',Buffer.from(JSON.stringify({voteDocId,transactionId:proof.transactionId})));return proof}
+ async GetVoteProof(ctx:Context,voteDocId:string):Promise<VoteProof|null>{const b=await ctx.stub.getState(this.key(ctx,voteDocId));return b.length?JSON.parse(b.toString()):null}
+ async VoteProofExists(ctx:Context,voteDocId:string):Promise<boolean>{return (await ctx.stub.getState(this.key(ctx,voteDocId))).length>0}
+ async GetAllVoteProofs(ctx:Context):Promise<VoteProof[]>{return this.collect(await ctx.stub.getStateByPartialCompositeKey(PREFIX,[]))}
+ async GetVoteProofsByElection(ctx:Context,electionId:string):Promise<VoteProof[]>{if(!electionId?.trim())throw new Error(`${Errors.MISSING_FIELD}:electionId`);return (await this.GetAllVoteProofs(ctx)).filter(x=>x.electionId===electionId).sort((a,b)=>a.voteDocId.localeCompare(b.voteDocId))}
+ private async collect(iterator:any):Promise<VoteProof[]>{const out:VoteProof[]=[];for(let r=await iterator.next();!r.done;r=await iterator.next())if(r.value?.value?.length)out.push(JSON.parse(r.value.value.toString()));await iterator.close();return out.sort((a,b)=>a.voteDocId.localeCompare(b.voteDocId))}
+}

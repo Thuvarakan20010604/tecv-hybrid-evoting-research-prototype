@@ -1,0 +1,33 @@
+{
+  "name": "tecv-research-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run tests --coverage",
+    "test:unit": "vitest run tests",
+    "start": "tsx apps/api/src/server.ts",
+    "seed": "tsx experiments/run.ts seed",
+    "attack-test": "tsx experiments/run.ts attacks",
+    "benchmark": "tsx experiments/run.ts benchmark",
+    "research-run": "tsx experiments/run.ts all",
+    "report": "tsx experiments/analyze.ts"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.5",
+    "@hyperledger/fabric-gateway": "^1.12.1",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.7.0",
+    "@vitest/coverage-v8": "^5.0.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

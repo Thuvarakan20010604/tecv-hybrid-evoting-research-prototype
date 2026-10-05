@@ -1,0 +1,18 @@
+services:
+  couchdb:
+    image: couchdb:3.4.3
+    container_name: tecv-application-couchdb
+    environment:
+      COUCHDB_USER: ${COUCHDB_ADMIN_USER:-tecv_admin}
+      COUCHDB_PASSWORD: ${COUCHDB_ADMIN_PASSWORD:-tecv_research_only}
+    ports:
+      - "5984:5984"
+    volumes:
+      - couchdb-data:/opt/couchdb/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:5984/_up"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  couchdb-data:

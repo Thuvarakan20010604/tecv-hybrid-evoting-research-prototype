@@ -1,0 +1,118 @@
+{
+  "category": "DERIVED FROM MEASURED DATA",
+  "matrix": {
+    "TP": 3,
+    "TN": 5,
+    "FP": 0,
+    "FN": 0,
+    "accuracy": 1,
+    "precision": 1,
+    "recall": 1,
+    "specificity": 1,
+    "f1": 1,
+    "falsePositiveRate": 0,
+    "falseNegativeRate": 0
+  },
+  "tests": [
+    {
+      "scenario": "TEST 0 Normal Vote Flow",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 1 Vote Document Modification",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 2 Hash Mismatch",
+      "status": "PASS",
+      "level": "COMPONENT_LEVEL"
+    },
+    {
+      "scenario": "TEST 3 Vote Deletion",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 4 Fake Vote Insertion",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 5 Sequential Double Vote",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 5 Concurrent Double Vote",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 6 Duplicate Proof",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 7 Unauthorized Proof",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 8 Unauthorized Result Proof",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 9 Unverified Counting",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 10 One BFT Orderer Unavailable",
+      "status": "NOT EXECUTED",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 11 Beyond BFT Threshold",
+      "status": "NOT EXECUTED",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 12 CouchDB Unavailable",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 13 Fabric Temporarily Unavailable",
+      "status": "NOT EXECUTED",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 14 Wrong Decryption Key",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 15 Pre-Encryption Voter Intent Mutation",
+      "status": "LIMITATION CONFIRMED",
+      "level": "OUTSIDE_TECV_SECURITY_SCOPE"
+    },
+    {
+      "scenario": "TEST 16 Metadata Modification",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 17 Observer Determinism",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    },
+    {
+      "scenario": "TEST 18 Result Proof Verification",
+      "status": "PASS",
+      "level": "COMPONENT_INTEGRATION"
+    }
+  ]
+}

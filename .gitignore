@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+# Research evidence under results/ is intentionally versioned for reproducibility.
+coverage/
+*.log
+fabric/bin/
+fabric/config/
+fabric/vendor/

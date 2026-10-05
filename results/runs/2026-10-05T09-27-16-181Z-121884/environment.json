@@ -1,0 +1,29 @@
+{
+  "category": "CONFIGURATION / FACT",
+  "capturedAt": "2026-10-05T09:27:16.445Z",
+  "timezone": "Asia/Colombo",
+  "os": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpuModel": "Intel(R) Core(TM) Ultra 7 155H",
+    "cpuCores": 22,
+    "totalRamBytes": 42275483648
+  },
+  "versions": {
+    "node": "v26.1.0",
+    "npm": "NOT_AVAILABLE",
+    "docker": "Docker version 29.6.2, build dfc4efb",
+    "dockerCompose": "Docker Compose version v5.3.1",
+    "fabric": "NOT EXECUTED — captured only when Fabric network bootstrap succeeds",
+    "couchdb": "3.4.3"
+  },
+  "configuration": {
+    "electionId": "ELECTION-2026-001",
+    "district": "Jaffna",
+    "seed": 20260047,
+    "ledgerAdapter": "MemoryLedger component/integration mode",
+    "orderersRunning": 0,
+    "peersRunning": 0
+  }
+}

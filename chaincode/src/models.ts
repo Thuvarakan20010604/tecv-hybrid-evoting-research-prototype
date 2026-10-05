@@ -1,0 +1,3 @@
+export interface VoteProof { voteDocId:string; voteDocRev:string; voteHash:string; district:string; electionId:string; timestamp:string; transactionId:string; submitterId:string }
+export interface ResultProof { resultId:string; electionId:string; district:string; candidateTotals:Record<string,number>; validVoteCount:number; invalidVoteCount:number; resultHash:string; timestamp:string; transactionId:string; submitterId:string }
+export const Errors={UNAUTHORIZED:'ERR_UNAUTHORIZED',DUPLICATE_PROOF:'ERR_DUPLICATE_PROOF',DUPLICATE_RESULT:'ERR_DUPLICATE_RESULT',MISSING_FIELD:'ERR_MISSING_FIELD',INVALID_ELECTION:'ERR_INVALID_ELECTION',INVALID_DISTRICT:'ERR_INVALID_DISTRICT',INVALID_DATA:'ERR_INVALID_DATA'} as const;

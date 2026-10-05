@@ -1,0 +1,321 @@
+# Docker Compose for 4-Orderer SmartBFT Network
+# Hyperledger Fabric v3.x
+#
+# Usage:
+#   docker-compose -f docker-compose-bft.yaml up -d
+#   docker-compose -f docker-compose-bft.yaml down
+
+version: '3.9'
+
+networks:
+  voting:
+    name: fabric_voting
+    driver: bridge
+
+services:
+  # Certificate Authorities
+  ca-org1:
+    image: hyperledger/fabric-ca:${CA_VERSION:-1.5}
+    container_name: ca-org1
+    ports:
+      - "7054:7054"
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-org1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server/crypto/ca.org1.example.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server/crypto/priv_sk
+      - FABRIC_CA_SERVER_BOOTSTRAP_USER_ADMIN=admin
+      - FABRIC_CA_SERVER_BOOTSTRAP_USER_PASS=adminpw
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./fabric/crypto/ca/org1:/etc/hyperledger/fabric-ca-server
+    networks:
+      - voting
+
+  ca-org2:
+    image: hyperledger/fabric-ca:${CA_VERSION:-1.5}
+    container_name: ca-org2
+    ports:
+      - "8054:7054"
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-org2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server/crypto/ca.org2.example.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server/crypto/priv_sk
+      - FABRIC_CA_SERVER_BOOTSTRAP_USER_ADMIN=admin
+      - FABRIC_CA_SERVER_BOOTSTRAP_USER_PASS=adminpw
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./fabric/crypto/ca/org2:/etc/hyperledger/fabric-ca-server
+    networks:
+      - voting
+
+  # Orderers - SmartBFT Consensus (4 Orderers)
+  orderer1:
+    image: hyperledger/fabric-orderer:${FABRIC_VERSION:-3.1.0}
+    container_name: orderer1.example.com
+    ports:
+      - "7050:7050"
+      - "8443:8443"
+    environment:
+      - FABRIC_CFGPATH=/etc/hyperledger/fabric/orderer
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_CONSENSUS_TYPE=smartbft
+      - ORDERER_FILELEDGER_LOCATION=/var/hyperledger/orderer/data
+      - ORDERER_ADMIN_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+      - ./fabric/config/orderer.yaml:/etc/hyperledger/fabric/orderer/orderer.yaml
+      - ./fabric/crypto/orderer1/msp:/var/hyperledger/orderer/msp
+      - ./fabric/crypto/orderer1/tls:/var/hyperledger/orderer/tls
+      - ./fabric/data/orderer1:/var/hyperledger/orderer/data
+      - ./fabric/data/genesis.block:/var/hyperledger/fabric/genesis.block
+    networks:
+      - voting
+
+  orderer2:
+    image: hyperledger/fabric-orderer:${FABRIC_VERSION:-3.1.0}
+    container_name: orderer2.example.com
+    ports:
+      - "8050:7050"
+    environment:
+      - FABRIC_CFGPATH=/etc/hyperledger/fabric/orderer
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_CONSENSUS_TYPE=smartbft
+      - ORDERER_FILELEDGER_LOCATION=/var/hyperledger/orderer/data
+      - ORDERER_ADMIN_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+      - ./fabric/config/orderer.yaml:/etc/hyperledger/fabric/orderer/orderer.yaml
+      - ./fabric/crypto/orderer2/msp:/var/hyperledger/orderer/msp
+      - ./fabric/crypto/orderer2/tls:/var/hyperledger/orderer/tls
+      - ./fabric/data/orderer2:/var/hyperledger/orderer/data
+    networks:
+      - voting
+
+  orderer3:
+    image: hyperledger/fabric-orderer:${FABRIC_VERSION:-3.1.0}
+    container_name: orderer3.example.com
+    ports:
+      - "9050:7050"
+    environment:
+      - FABRIC_CFGPATH=/etc/hyperledger/fabric/orderer
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_CONSENSUS_TYPE=smartbft
+      - ORDERER_FILELEDGER_LOCATION=/var/hyperledger/orderer/data
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+      - ./fabric/config/orderer.yaml:/etc/hyperledger/fabric/orderer/orderer.yaml
+      - ./fabric/crypto/orderer3/msp:/var/hyperledger/orderer/msp
+      - ./fabric/crypto/orderer3/tls:/var/hyperledger/orderer/tls
+      - ./fabric/data/orderer3:/var/hyperledger/orderer/data
+    networks:
+      - voting
+
+  orderer4:
+    image: hyperledger/fabric-orderer:${FABRIC_VERSION:-3.1.0}
+    container_name: orderer4.example.com
+    ports:
+      - "10050:7050"
+    environment:
+      - FABRIC_CFGPATH=/etc/hyperledger/fabric/orderer
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_CONSENSUS_TYPE=smartbft
+      - ORDERER_FILELEDGER_LOCATION=/var/hyperledger/orderer/data
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+      - ./fabric/config/orderer.yaml:/etc/hyperledger/fabric/orderer/orderer.yaml
+      - ./fabric/crypto/orderer4/msp:/var/hyperledger/orderer/msp
+      - ./fabric/crypto/orderer4/tls:/var/hyperledger/orderer/tls
+      - ./fabric/data/orderer4:/var/hyperledger/orderer/data
+    networks:
+      - voting
+
+  # CouchDB for Application Data
+  # NOTE: This CouchDB is the Fabric state DB - separate from any application-specific databases
+  couchdb-org1:
+    image: couchdb:3.3
+    container_name: couchdb-org1
+    ports:
+      - "5984:5984"
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    volumes:
+      - couchdb-org1-data:/opt/couchdb/data
+    networks:
+      - voting
+
+  couchdb-org2:
+    image: couchdb:3.3
+    container_name: couchdb-org2
+    ports:
+      - "6984:5984"
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    volumes:
+      - couchdb-org2-data:/opt/couchdb/data
+    networks:
+      - voting
+
+  # Peers
+  peer0.org1:
+    image: hyperledger/fabric-peer:${FABRIC_VERSION:-3.1.0}
+    container_name: peer0.org1.example.com
+    ports:
+      - "7051:7051"
+      - "9444:9444"
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_voting
+      - FABRIC_CFGPATH=/etc/hyperledger/fabric
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_ID=peer0.org1.example.com
+      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_ADVERTISEDADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/crypto/peer/msp
+      # CouchDB as Fabric state DB (distinct from application-specific databases)
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb-org1:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/fabric/crypto/orderer/tls/ca.crt]
+    working_dir: /root
+    command: peer node start
+    volumes:
+      - /var/run:/host/var/run
+      - ./fabric/crypto/org1/peer0.org1/msp:/etc/hyperledger/fabric/crypto/peer/msp
+      - ./fabric/crypto/org1/peer0.org1/tls:/etc/hyperledger/fabric/crypto/peer/tls
+      - ./fabric/crypto/orderer1/tls:/var/hyperledger/fabric/crypto/orderer/tls
+      - ./fabric/data/peer0.org1:/var/hyperledger/fabric/data
+    depends_on:
+      - orderer1
+      - orderer2
+      - orderer3
+      - orderer4
+      - couchdb-org1
+    networks:
+      - voting
+
+  peer0.org2:
+    image: hyperledger/fabric-peer:${FABRIC_VERSION:-3.1.0}
+    container_name: peer0.org2.example.com
+    ports:
+      - "8051:7051"
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_voting
+      - FABRIC_CFGPATH=/etc/hyperledger/fabric
+      - CORE_PEER_LOCALMSPID=Org2MSP
+      - CORE_PEER_ID=peer0.org2.example.com
+      - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_ADVERTISEDADDRESS=peer0.org2.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/crypto/peer/msp
+      # CouchDB as Fabric state DB
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb-org2:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/fabric/crypto/orderer/tls/ca.crt]
+    working_dir: /root
+    command: peer node start
+    volumes:
+      - /var/run:/host/var/run
+      - ./fabric/crypto/org2/peer0.org2/msp:/etc/hyperledger/fabric/crypto/peer/msp
+      - ./fabric/crypto/org2/peer0.org2/tls:/etc/hyperledger/fabric/crypto/peer/tls
+      - ./fabric/crypto/orderer1/tls:/var/hyperledger/fabric/crypto/orderer/tls
+      - ./fabric/data/peer0.org2:/var/hyperledger/fabric/data
+    depends_on:
+      - orderer1
+      - orderer2
+      - orderer3
+      - orderer4
+      - couchdb-org2
+    networks:
+      - voting
+
+  # CLI for chaincode and administrative operations
+  cli:
+    image: hyperledger/fabric-tools:${FABRIC_VERSION:-3.1.0}
+    container_name: fabric-cli
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - FABRIC_CFG_PATH=/etc/hyperledger/config
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/crypto/peer/msp
+      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - ORDERER_TLS_CA=/etc/hyperledger/fabric/crypto/orderer/tls/ca.crt
+      - ORDERER_ADDRESS=orderer1.example.com:7050
+    working_dir: /root
+    command: /bin/bash
+    volumes:
+      - ./fabric/config:/etc/hyperledger/config
+      - ./fabric/crypto/org1/peer0.org1/msp:/etc/hyperledger/fabric/crypto/peer/msp
+      - ./fabric/crypto/org1/peer0.org1/tls:/etc/hyperledger/fabric/crypto/peer/tls
+      - ./fabric/crypto/orderer1/tls:/etc/hyperledger/fabric/crypto/orderer/tls
+      - ./chaincode:/root/chaincode
+    networks:
+      - voting
+
+volumes:
+  couchdb-org1-data:
+  couchdb-org2-data:

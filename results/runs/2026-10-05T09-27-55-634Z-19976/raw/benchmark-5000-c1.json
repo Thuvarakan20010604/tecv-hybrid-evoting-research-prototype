@@ -1,0 +1,37 @@
+{
+  "runId": "2026-10-05T09-27-55-634Z-19976",
+  "n": 5000,
+  "concurrency": 1,
+  "seed": 20260047,
+  "successes": 5000,
+  "failures": 0,
+  "elapsedMs": 110897.05459999999,
+  "requestThroughputPerSecond": 45.08686022396848,
+  "successfulCommitThroughputPerSecond": 45.08686022396848,
+  "latencyMs": {
+    "count": 5000,
+    "min": 18.968500000002678,
+    "max": 60.97479999999632,
+    "mean": 22.17250047999988,
+    "median": 21.676149999999325,
+    "standardDeviation": 2.298750165778204,
+    "p90": 23.948690000001083,
+    "p95": 25.518684999996914,
+    "p99": 32.39581600001841,
+    "confidenceInterval95": {
+      "lower": 22.10878237624524,
+      "upper": 22.236218583754518
+    }
+  },
+  "tecv": {
+    "durationMs": 10007.506900000008,
+    "validationsPerSecond": 499.6249365563761,
+    "valid": 5000,
+    "invalid": 0
+  },
+  "storage": {
+    "couchExternalSizeBytes": 1515000,
+    "fabricLedgerBytes": null,
+    "status": "CouchDB MEASURED; Fabric NOT EXECUTED"
+  }
+}

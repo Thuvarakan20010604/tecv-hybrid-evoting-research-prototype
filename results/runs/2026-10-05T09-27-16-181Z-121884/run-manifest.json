@@ -1,0 +1,431 @@
+{
+  "runId": "2026-10-05T09-27-16-181Z-121884",
+  "startedAt": "2026-10-05T09:27:17.045Z",
+  "seed": 20260047,
+  "mode": "attacks",
+  "classification": "Component/integration experiments use real CouchDB and MemoryLedger; Fabric claims are NOT TESTED unless separately recorded.",
+  "attacks": {
+    "rows": [
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 0 Normal Vote Flow",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": {
+          "auditRunId": "37ae650a-af5d-4f4a-aa4f-44ea3ce8e6f3",
+          "startedAt": "2026-10-05T09:27:17.249Z",
+          "completedAt": "2026-10-05T09:27:17.270Z",
+          "electionId": "ELECTION-2026-001",
+          "district": "Jaffna",
+          "totalLedgerProofs": 5,
+          "totalDatabaseVotes": 5,
+          "validVoteDocIds": [
+            "00e51c84-dcaf-4b58-9943-9699a5ae6910",
+            "394ab9a8-f907-4f2b-9863-cdd3875b7a89",
+            "618a32dc-8e69-4fa6-bbd4-c065d0aee017",
+            "b7150065-1913-4626-a7f8-c014ef9ca237",
+            "d0f26da0-30ac-4ee5-b789-e02f7e3b258b"
+          ],
+          "anomalies": [],
+          "validVotes": 5,
+          "invalidVotes": 0,
+          "missingVotes": 0,
+          "revisionMismatches": 0,
+          "hashMismatches": 0,
+          "unprovenDatabaseRecords": 0,
+          "auditResultHash": "31c634a65a9f901451b8e750befc04dda7b2181b1c09624cb9d66319b270610b"
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 1 Vote Document Modification",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": {
+          "voteDocId": "00e51c84-dcaf-4b58-9943-9699a5ae6910",
+          "classification": "REVISION_MISMATCH",
+          "expectedRev": "1-06d39ff57584ead88bfbb024d7d773e8",
+          "actualRev": "2-904fd5550f42d7ce15b7bb9602266b37",
+          "expectedHash": "b23e4161d095d3543b1808dc79636482188468aa070310944d25a34d6d603453",
+          "actualHash": "b23e4161d095d3543b1808dc79636482188468aa070310944d25a34d6d603453"
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 2 Hash Mismatch",
+        "status": "PASS",
+        "level": "COMPONENT_LEVEL",
+        "observed": {
+          "auditRunId": "fe27a758-b417-47ed-a2ca-092df730089c",
+          "startedAt": "2026-10-05T09:27:17.295Z",
+          "completedAt": "2026-10-05T09:27:17.295Z",
+          "electionId": "ELECTION-2026-001",
+          "district": "Jaffna",
+          "totalLedgerProofs": 1,
+          "totalDatabaseVotes": 1,
+          "validVoteDocIds": [],
+          "anomalies": [
+            {
+              "voteDocId": "d0f26da0-30ac-4ee5-b789-e02f7e3b258b",
+              "classification": "HASH_MISMATCH",
+              "expectedRev": "1-b16f8e5274126d261494ea876578f435",
+              "actualRev": "1-b16f8e5274126d261494ea876578f435",
+              "expectedHash": "0000000000000000000000000000000000000000000000000000000000000000",
+              "actualHash": "3abc97c14e3e5c36b22032a7118beca2f4c3a3f22e884c55a2713c39252eadc3"
+            }
+          ],
+          "validVotes": 0,
+          "invalidVotes": 1,
+          "missingVotes": 0,
+          "revisionMismatches": 0,
+          "hashMismatches": 1,
+          "unprovenDatabaseRecords": 0,
+          "auditResultHash": "879932183c7853ab954d1b8ec5b62a956f628749d9bc08b7b4adf82085895a36"
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 3 Vote Deletion",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": {
+          "auditRunId": "c5bb9b06-44a8-4b25-9c74-c5158f51a0c7",
+          "startedAt": "2026-10-05T09:27:17.310Z",
+          "completedAt": "2026-10-05T09:27:17.323Z",
+          "electionId": "ELECTION-2026-001",
+          "district": "Jaffna",
+          "totalLedgerProofs": 5,
+          "totalDatabaseVotes": 5,
+          "validVoteDocIds": [
+            "394ab9a8-f907-4f2b-9863-cdd3875b7a89",
+            "b7150065-1913-4626-a7f8-c014ef9ca237",
+            "d0f26da0-30ac-4ee5-b789-e02f7e3b258b"
+          ],
+          "anomalies": [
+            {
+              "voteDocId": "00e51c84-dcaf-4b58-9943-9699a5ae6910",
+              "classification": "REVISION_MISMATCH",
+              "expectedRev": "1-06d39ff57584ead88bfbb024d7d773e8",
+              "actualRev": "2-904fd5550f42d7ce15b7bb9602266b37",
+              "expectedHash": "b23e4161d095d3543b1808dc79636482188468aa070310944d25a34d6d603453",
+              "actualHash": "b23e4161d095d3543b1808dc79636482188468aa070310944d25a34d6d603453"
+            },
+            {
+              "voteDocId": "618a32dc-8e69-4fa6-bbd4-c065d0aee017",
+              "classification": "MISSING_VOTE"
+            },
+            {
+              "voteDocId": "fake-unproven",
+              "classification": "UNPROVEN_DB_RECORD",
+              "actualRev": "1-25b26de80a10a00888d55d3da1846fde",
+              "actualHash": "b42c4bda365b8b76f3f7be41b895168157a01bd1fe109aae57e2fe979023d761"
+            }
+          ],
+          "validVotes": 3,
+          "invalidVotes": 3,
+          "missingVotes": 1,
+          "revisionMismatches": 1,
+          "hashMismatches": 0,
+          "unprovenDatabaseRecords": 1,
+          "auditResultHash": "4d0494915483076f1422cbb9da0dd8efcb8e849d017fe6334aab1f7bd5b81245"
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 4 Fake Vote Insertion",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": {
+          "auditRunId": "c5bb9b06-44a8-4b25-9c74-c5158f51a0c7",
+          "startedAt": "2026-10-05T09:27:17.310Z",
+          "completedAt": "2026-10-05T09:27:17.323Z",
+          "electionId": "ELECTION-2026-001",
+          "district": "Jaffna",
+          "totalLedgerProofs": 5,
+          "totalDatabaseVotes": 5,
+          "validVoteDocIds": [
+            "394ab9a8-f907-4f2b-9863-cdd3875b7a89",
+            "b7150065-1913-4626-a7f8-c014ef9ca237",
+            "d0f26da0-30ac-4ee5-b789-e02f7e3b258b"
+          ],
+          "anomalies": [
+            {
+              "voteDocId": "00e51c84-dcaf-4b58-9943-9699a5ae6910",
+              "classification": "REVISION_MISMATCH",
+              "expectedRev": "1-06d39ff57584ead88bfbb024d7d773e8",
+              "actualRev": "2-904fd5550f42d7ce15b7bb9602266b37",
+              "expectedHash": "b23e4161d095d3543b1808dc79636482188468aa070310944d25a34d6d603453",
+              "actualHash": "b23e4161d095d3543b1808dc79636482188468aa070310944d25a34d6d603453"
+            },
+            {
+              "voteDocId": "618a32dc-8e69-4fa6-bbd4-c065d0aee017",
+              "classification": "MISSING_VOTE"
+            },
+            {
+              "voteDocId": "fake-unproven",
+              "classification": "UNPROVEN_DB_RECORD",
+              "actualRev": "1-25b26de80a10a00888d55d3da1846fde",
+              "actualHash": "b42c4bda365b8b76f3f7be41b895168157a01bd1fe109aae57e2fe979023d761"
+            }
+          ],
+          "validVotes": 3,
+          "invalidVotes": 3,
+          "missingVotes": 1,
+          "revisionMismatches": 1,
+          "hashMismatches": 0,
+          "unprovenDatabaseRecords": 1,
+          "auditResultHash": "4d0494915483076f1422cbb9da0dd8efcb8e849d017fe6334aab1f7bd5b81245"
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 5 Sequential Double Vote",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "ERR_ALREADY_VOTED"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 5 Concurrent Double Vote",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": [
+          "ACCEPTED",
+          "ERR_CONCURRENT_VOTE_CONFLICT"
+        ]
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 6 Duplicate Proof",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "ERR_DUPLICATE_PROOF"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 7 Unauthorized Proof",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "ERR_UNAUTHORIZED"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 8 Unauthorized Result Proof",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "ERR_UNAUTHORIZED"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 9 Unverified Counting",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "ERR_VALID_AUDIT_REQUIRED"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 10 One BFT Orderer Unavailable",
+        "status": "NOT EXECUTED",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "Fabric BFT network not active"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 11 Beyond BFT Threshold",
+        "status": "NOT EXECUTED",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "Fabric BFT network not active"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 12 CouchDB Unavailable",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "fetch failed"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 13 Fabric Temporarily Unavailable",
+        "status": "NOT EXECUTED",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": "Fabric adapter not active"
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 14 Wrong Decryption Key",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": {
+          "decryptionFailures": 5
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 15 Pre-Encryption Voter Intent Mutation",
+        "status": "LIMITATION CONFIRMED",
+        "level": "OUTSIDE_TECV_SECURITY_SCOPE",
+        "observed": {
+          "intended": "Candidate A",
+          "encrypted": "Candidate B",
+          "tecv": "VALID"
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 16 Metadata Modification",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": {
+          "auditRunId": "c5bb9b06-44a8-4b25-9c74-c5158f51a0c7",
+          "startedAt": "2026-10-05T09:27:17.310Z",
+          "completedAt": "2026-10-05T09:27:17.323Z",
+          "electionId": "ELECTION-2026-001",
+          "district": "Jaffna",
+          "totalLedgerProofs": 5,
+          "totalDatabaseVotes": 5,
+          "validVoteDocIds": [
+            "394ab9a8-f907-4f2b-9863-cdd3875b7a89",
+            "b7150065-1913-4626-a7f8-c014ef9ca237",
+            "d0f26da0-30ac-4ee5-b789-e02f7e3b258b"
+          ],
+          "anomalies": [
+            {
+              "voteDocId": "00e51c84-dcaf-4b58-9943-9699a5ae6910",
+              "classification": "REVISION_MISMATCH",
+              "expectedRev": "1-06d39ff57584ead88bfbb024d7d773e8",
+              "actualRev": "2-904fd5550f42d7ce15b7bb9602266b37",
+              "expectedHash": "b23e4161d095d3543b1808dc79636482188468aa070310944d25a34d6d603453",
+              "actualHash": "b23e4161d095d3543b1808dc79636482188468aa070310944d25a34d6d603453"
+            },
+            {
+              "voteDocId": "618a32dc-8e69-4fa6-bbd4-c065d0aee017",
+              "classification": "MISSING_VOTE"
+            },
+            {
+              "voteDocId": "fake-unproven",
+              "classification": "UNPROVEN_DB_RECORD",
+              "actualRev": "1-25b26de80a10a00888d55d3da1846fde",
+              "actualHash": "b42c4bda365b8b76f3f7be41b895168157a01bd1fe109aae57e2fe979023d761"
+            }
+          ],
+          "validVotes": 3,
+          "invalidVotes": 3,
+          "missingVotes": 1,
+          "revisionMismatches": 1,
+          "hashMismatches": 0,
+          "unprovenDatabaseRecords": 1,
+          "auditResultHash": "4d0494915483076f1422cbb9da0dd8efcb8e849d017fe6334aab1f7bd5b81245"
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 17 Observer Determinism",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": {
+          "auditHashA": "869bc1e6002473c16d49031f979f9f0443d9f4097ac9c0002803237a06bc3270",
+          "auditHashB": "869bc1e6002473c16d49031f979f9f0443d9f4097ac9c0002803237a06bc3270"
+        }
+      },
+      {
+        "runId": "2026-10-05T09-27-16-181Z-121884",
+        "scenario": "TEST 18 Result Proof Verification",
+        "status": "PASS",
+        "level": "COMPONENT_INTEGRATION",
+        "observed": {
+          "resultId": "ca92325d-eaed-49a1-be67-f19d25fb573e",
+          "electionId": "ELECTION-2026-001",
+          "district": "Jaffna",
+          "candidateTotals": {
+            "Candidate A": 2,
+            "Candidate B": 2,
+            "Candidate C": 0,
+            "Candidate D": 1
+          },
+          "validVoteCount": 5,
+          "invalidVoteCount": 3,
+          "auditResultHash": "869bc1e6002473c16d49031f979f9f0443d9f4097ac9c0002803237a06bc3270",
+          "resultHash": "362b70bb5b55877cdb58350e5e4e4c929fa9494e68d4615d3e29d4063500da9d",
+          "timestamp": "2026-10-05T09:27:17.448Z",
+          "transactionId": "a326ee88-3dc9-482f-bbfc-57207802bbd3"
+        }
+      }
+    ],
+    "matrix": {
+      "TP": 3,
+      "TN": 5,
+      "FP": 0,
+      "FN": 0,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1,
+      "specificity": 1,
+      "f1": 1,
+      "falsePositiveRate": 0,
+      "falseNegativeRate": 0
+    },
+    "tally": {
+      "summary": {
+        "electionId": "ELECTION-2026-001",
+        "district": "Jaffna",
+        "candidateTotals": {
+          "Candidate A": 2,
+          "Candidate B": 2,
+          "Candidate C": 0,
+          "Candidate D": 1
+        },
+        "validVoteCount": 5,
+        "invalidVoteCount": 3,
+        "auditResultHash": "869bc1e6002473c16d49031f979f9f0443d9f4097ac9c0002803237a06bc3270"
+      },
+      "failures": [],
+      "resultProof": {
+        "resultId": "ca92325d-eaed-49a1-be67-f19d25fb573e",
+        "electionId": "ELECTION-2026-001",
+        "district": "Jaffna",
+        "candidateTotals": {
+          "Candidate A": 2,
+          "Candidate B": 2,
+          "Candidate C": 0,
+          "Candidate D": 1
+        },
+        "validVoteCount": 5,
+        "invalidVoteCount": 3,
+        "auditResultHash": "869bc1e6002473c16d49031f979f9f0443d9f4097ac9c0002803237a06bc3270",
+        "resultHash": "362b70bb5b55877cdb58350e5e4e4c929fa9494e68d4615d3e29d4063500da9d",
+        "timestamp": "2026-10-05T09:27:17.448Z",
+        "transactionId": "a326ee88-3dc9-482f-bbfc-57207802bbd3"
+      }
+    }
+  },
+  "environment": {
+    "category": "CONFIGURATION / FACT",
+    "capturedAt": "2026-10-05T09:27:16.445Z",
+    "timezone": "Asia/Colombo",
+    "os": {
+      "platform": "win32",
+      "release": "10.0.26200",
+      "arch": "x64",
+      "cpuModel": "Intel(R) Core(TM) Ultra 7 155H",
+      "cpuCores": 22,
+      "totalRamBytes": 42275483648
+    },
+    "versions": {
+      "node": "v26.1.0",
+      "npm": "NOT_AVAILABLE",
+      "docker": "Docker version 29.6.2, build dfc4efb",
+      "dockerCompose": "Docker Compose version v5.3.1",
+      "fabric": "NOT EXECUTED — captured only when Fabric network bootstrap succeeds",
+      "couchdb": "3.4.3"
+    },
+    "configuration": {
+      "electionId": "ELECTION-2026-001",
+      "district": "Jaffna",
+      "seed": 20260047,
+      "ledgerAdapter": "MemoryLedger component/integration mode",
+      "orderersRunning": 0,
+      "peersRunning": 0
+    }
+  },
+  "completedAt": "2026-10-05T09:27:17.451Z"
+}
