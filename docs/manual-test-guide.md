@@ -326,3 +326,211 @@ Do not write that:
 - expected response examples are measured findings.
 
 Use: **“observed in the tested prototype environment”** and **“100% detection in the tested attack set”** only when the saved evidence supports those statements.
+
+---
+
+## 7. Supervisor screenshot walkthrough for the existing demonstration state
+
+This section documents the author's live component-test state inspected on **2026-10-05 at approximately 16:41 IST**. It is a dated observation, not a universal expected result.
+
+> **Fresh clone versus existing state:** A supervisor testing a fresh clone must follow Section 1 and run `npm run seed`. Only skip reseeding when continuing the author's already-running demonstration instance described below. Reseeding resets `voters_db` and `votes_db`, and restarting an API that uses the MemoryLedger adapter clears that process's in-memory proofs.
+
+### 7.1 Observed current state
+
+The inspected instance contained:
+
+- 100 synthetic voter documents;
+- 7 AES-256-GCM encrypted vote documents;
+- 7 component-ledger proofs;
+- 7 TECV-valid votes;
+- 0 invalid votes; and
+- 0 reported anomalies.
+
+Its verified tally was:
+
+| Candidate | Observed votes |
+|---|---:|
+| Candidate A | 2 |
+| Candidate B | 1 |
+| Candidate C | 3 |
+| Candidate D | 1 |
+| **Total** | **7** |
+
+Use only the API process at <http://localhost:3000> for this snapshot. A second process observed at port 3300 had an independent empty MemoryLedger and therefore classified the seven CouchDB records as unproven. This illustrates why one component-test API process must be used consistently. Port 3300 is not part of the documented test flow.
+
+### 7.2 Capture the Docker deployment
+
+Run in Git Bash:
+
+```bash
+docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+```
+
+For the full Fabric setup, the screenshot should show the application CouchDB, four orderer containers, two peer containers, and the deployed chaincode containers. Container names can vary with the Compose project and chaincode package IDs; record the names actually displayed rather than treating an example name as fixed.
+
+**Suggested caption:**
+
+> **Figure X:** Docker containers used by the local TECV prototype, including application CouchDB, four Fabric orderers, two Fabric peers, and deployed chaincode containers.
+
+### 7.3 Capture a synthetic voter document
+
+Open CouchDB Fauxton at <http://localhost:5984/_utils/> and sign in with the local research-only credentials configured in `docker-compose.yml`:
+
+```text
+Username: tecv_admin
+Password: tecv_research_only
+```
+
+These are demonstration credentials, not production credentials. Then:
+
+1. select `voters_db`;
+2. select **All Documents**; and
+3. open `voter-000001`.
+
+The inspected synthetic document contained fields matching this pattern:
+
+```json
+{
+  "_id": "voter-000001",
+  "voterId": "VOTER-000001",
+  "nic": "SYNTHETIC-NIC-000001",
+  "district": "Jaffna",
+  "biometricRef": "MOCK-BIOMETRIC-HASH",
+  "isVoted": true,
+  "voteState": "VOTE_COMPLETE",
+  "voteDocId": "<generated UUID>"
+}
+```
+
+The `_rev` and `voteDocId` values are generated values and can differ between runs.
+
+**Suggested caption:**
+
+> **Figure X:** Synthetic voter record stored in `voters_db`, showing the completed voting state and mock biometric reference.
+
+### 7.4 Capture an encrypted ballot document
+
+In Fauxton:
+
+1. select `votes_db`;
+2. select **All Documents**; and
+3. open any vote document.
+
+The record should contain:
+
+- `voteDocId`;
+- `_rev`;
+- `district`;
+- `electionId`;
+- `timestamp`;
+- `encryptedBallot.algorithm`;
+- `encryptedBallot.iv`;
+- `encryptedBallot.ciphertext`; and
+- `encryptedBallot.authTag`.
+
+The candidate choice must not appear in plaintext in the stored ballot document.
+
+**Suggested caption:**
+
+> **Figure X:** AES-256-GCM encrypted ballot stored in the application CouchDB. The operational record contains ciphertext, IV, and authentication tag but no plaintext candidate choice.
+
+Do not include any of the following in screenshots or published evidence:
+
+- `BALLOT_KEY_HEX`;
+- a local `.env` file;
+- Fabric private keys; or
+- MSP keystore contents.
+
+### 7.5 Capture the TECV audit
+
+Open <http://localhost:3000>, select **Observer**, and click **Run deterministic TECV**.
+
+The author's dated seven-vote snapshot produced these key observed fields:
+
+```json
+{
+  "totalLedgerProofs": 7,
+  "totalDatabaseVotes": 7,
+  "validVotes": 7,
+  "invalidVotes": 0,
+  "missingVotes": 0,
+  "revisionMismatches": 0,
+  "hashMismatches": 0,
+  "unprovenDatabaseRecords": 0,
+  "auditResultHash": "5f32647c36ece716b4b3d2e13be26424661a22fe17d368cd3c58f1ed3262957d"
+}
+```
+
+This exact hash applies only to the frozen state that produced it. A fresh run can legitimately have different document IDs, revisions, timestamps, ciphertext, and audit hash. Save and report the response actually displayed during the supervisor's run.
+
+**Suggested caption:**
+
+> **Figure X:** TECV audit of the frozen demonstration state. All seven database ballots matched their corresponding component-ledger proof records, with no missing, revised, hash-mismatched, or unproven records.
+
+### 7.6 Capture the verified tally
+
+Select **Results** and click **Generate verified tally**. The author's dated snapshot produced:
+
+```json
+{
+  "candidateTotals": {
+    "Candidate A": 2,
+    "Candidate B": 1,
+    "Candidate C": 3,
+    "Candidate D": 1
+  },
+  "validVoteCount": 7,
+  "invalidVoteCount": 0
+}
+```
+
+**Suggested caption:**
+
+> **Figure X:** Verified tally generated exclusively from seven TECV-valid encrypted ballots after successful AES-GCM decryption.
+
+### 7.7 Capture sequential second-vote rejection
+
+In **Polling Station**, enter:
+
+```text
+Voter: voter-000001
+Candidate: Candidate B
+```
+
+Click **Cast encrypted vote**. In the documented state, the expected rejection category is:
+
+```json
+{
+  "error": "ERR_ALREADY_VOTED"
+}
+```
+
+Save the actual response. Do not present this expected pattern as an observation if the request was not executed.
+
+**Suggested caption:**
+
+> **Figure X:** Rejection of a sequential second-vote attempt for an already-used synthetic voter record.
+
+### 7.8 Optionally add one new sample vote
+
+In the dated snapshot, `voter-000007` was unused. To demonstrate another successful vote, enter:
+
+```text
+Voter: voter-000007
+Candidate: Candidate A
+```
+
+After casting the vote:
+
+1. capture the successful response;
+2. run TECV again;
+3. generate the tally again; and
+4. record the new actual counts and hashes.
+
+This action changes the inspected database from seven to eight votes and changes the tally and audit hash. Capture the seven-vote baseline first. On a different run, confirm that `voter-000007` is still unused before submitting the request.
+
+### 7.9 Paper-ready wording for this snapshot
+
+The following wording may be used only with the corresponding saved evidence and screenshot:
+
+> In the manually inspected component-test election state, CouchDB contained seven encrypted ballot documents and the MemoryLedger adapter contained seven corresponding vote proofs. TECV classified all seven records as valid, with zero missing votes, revision mismatches, hash mismatches, or unproven database records. The verified tally produced Candidate A = 2, Candidate B = 1, Candidate C = 3, and Candidate D = 1. These observations apply only to the executed local component-test environment and must not be interpreted as Fabric throughput measurements, a geographically distributed deployment, proof of malicious Byzantine-fault tolerance, proof of voter intent, or proof of complete election security.
